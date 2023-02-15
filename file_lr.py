@@ -6,7 +6,7 @@ class FileLR(LambdaLR):
     def __init__(self, optimizer, path='lr', *args, **kwargs):
         self.path = path
         self.optimizer_initial_lr = optimizer.defaults['lr']
-        super(FileLR, self).__init__(optimizer, *args, **kwargs)
+        super(FileLR, self).__init__(optimizer, self.lr_lambda, *args, **kwargs)
 
     def lr_lambda(self, epoch):
         with open(self.lr_file, 'r') as f:
