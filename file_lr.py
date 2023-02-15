@@ -9,7 +9,7 @@ class FileLR(LambdaLR):
         super(FileLR, self).__init__(optimizer, self.lr_lambda, *args, **kwargs)
 
     def lr_lambda(self, epoch):
-        with open(self.lr_file, 'r') as f:
+        with open(self.path, 'r') as f:
             lr = float(f.read())
         return lr / self.optimizer_initial_lr
 
