@@ -10,7 +10,7 @@ def log(
     func: callable = None,
     prefix: Optional[str] = None,
     rank_zero_only: bool = True,
-    **kwargs,
+    **log_kwargs,
 ):
     if func is None:
         return lambda func: log(func, prefix)
@@ -44,14 +44,14 @@ def log(
                 f"{prefix}_loss",
                 result,
                 rank_zero_only=rank_zero_only,
-                **kwargs,
+                **log_kwargs,
             )
         elif isinstance(result, dict):
             _result = {f"{prefix}_{k}": v for k, v in result.items()}
             self.log_dict(
                 _result,
                 rank_zero_only=rank_zero_only,
-                **kwargs,
+                **log_kwargs,
             )
         else:
             print(f"result type {type(result)} is not supported for logging")
