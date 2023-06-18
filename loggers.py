@@ -54,7 +54,7 @@ def log(
                 **log_kwargs,
             )
         else:
-            print(f"result type {type(result)} is not supported for logging")
+            raise TypeError(f"result type {type(result)} is not supported for logging")
 
         return result
 
