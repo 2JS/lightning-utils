@@ -27,27 +27,27 @@ def log(
 
         if prefix is None:
             if stage == RunningStage.TRAINING:
-                prefix = "train"
+                prefix = "train_"
             elif stage == RunningStage.VALIDATING:
-                prefix = "valid"
+                prefix = "valid_"
             elif stage == RunningStage.TESTING:
-                prefix = "test"
+                prefix = "test_"
             elif stage == RunningStage.SANITY_CHECKING:
-                prefix = "sanity"
+                prefix = "sanity_"
             elif stage == RunningStage.PREDICTING:
-                prefix = "predict"
+                prefix = "predict_"
             else:
-                prefix = "unknown"
+                prefix = "unknown_"
 
         if isinstance(result, torch.Tensor):
             self.log(
-                f"{prefix}_loss",
+                f"{prefix}loss",
                 result,
                 rank_zero_only=rank_zero_only,
                 **log_kwargs,
             )
         elif isinstance(result, dict):
-            _result = {f"{prefix}_{k}": v for k, v in result.items() if k[0] != "_"}
+            _result = {f"{prefix}{k}": v for k, v in result.items() if k[0] != "_"}
             self.log_dict(
                 _result,
                 rank_zero_only=rank_zero_only,
