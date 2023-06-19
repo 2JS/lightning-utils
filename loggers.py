@@ -47,7 +47,7 @@ def log(
                 **log_kwargs,
             )
         elif isinstance(result, dict):
-            _result = {f"{prefix}_{k}": v for k, v in result.items()}
+            _result = {f"{prefix}_{k}": v for k, v in result.items() if k[0] != "_"}
             self.log_dict(
                 _result,
                 rank_zero_only=rank_zero_only,
