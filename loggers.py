@@ -1,7 +1,8 @@
 from functools import wraps
-from typing import Optional
+from typing import Any, Optional
 
 import pytorch_lightning as pl
+from pytorch_lightning.utilities.types import STEP_OUTPUT
 import torch
 from pytorch_lightning.trainer.states import RunningStage
 
@@ -69,3 +70,26 @@ def log(
         return result
 
     return wrapper
+
+
+class OutputLogger(pl.Callback):
+    def on_train_batch_end(
+        self,
+        trainer: pl.Trainer,
+        pl_module: pl.LightningModule,
+        outputs: STEP_OUTPUT,
+        batch: Any,
+        batch_idx: int,
+    ):
+        _log(pl_module, outputs, prefix="train_")
+
+    def on_validation_batch_end(
+        self,
+        trainer: pl.Trainer,
+        pl_module: pl.LightningModule,
+        outputs: STEP_OUTPUT | None,
+        batch: Any,
+        batch_idx: int,
+        dataloader_idx: int = 0,
+    ):
+        _log(pl_module, outputs, prefix="valid_")
