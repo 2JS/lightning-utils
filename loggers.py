@@ -6,6 +6,31 @@ import torch
 from pytorch_lightning.trainer.states import RunningStage
 
 
+def _log(
+    pl_module: pl.LightningModule,
+    result: torch.Tensor | dict,
+    prefix: Optional[str] = None,
+    rank_zero_only: bool = True,
+    **log_kwargs,
+):
+    if isinstance(result, torch.Tensor):
+        pl_module.log(
+            f"{prefix}loss",
+            result,
+            rank_zero_only=rank_zero_only,
+            **log_kwargs,
+        )
+    elif isinstance(result, dict):
+        _result = {f"{prefix}{k}": v for k, v in result.items() if k[0] != "_"}
+        pl_module.log_dict(
+            _result,
+            rank_zero_only=rank_zero_only,
+            **log_kwargs,
+        )
+    else:
+        raise TypeError(f"result type {type(result)} is not supported for logging")
+
+
 def log(
     func: callable = None,
     prefix: Optional[str] = None,
@@ -39,22 +64,7 @@ def log(
             else:
                 prefix = "unknown_"
 
-        if isinstance(result, torch.Tensor):
-            self.log(
-                f"{prefix}loss",
-                result,
-                rank_zero_only=rank_zero_only,
-                **log_kwargs,
-            )
-        elif isinstance(result, dict):
-            _result = {f"{prefix}{k}": v for k, v in result.items() if k[0] != "_"}
-            self.log_dict(
-                _result,
-                rank_zero_only=rank_zero_only,
-                **log_kwargs,
-            )
-        else:
-            raise TypeError(f"result type {type(result)} is not supported for logging")
+        _log(self, result, prefix, rank_zero_only, **log_kwargs)
 
         return result
 
