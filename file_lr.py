@@ -18,13 +18,17 @@ class FileLRCallback(Callback):
         super().__init__()
         self.path = path
 
-    def on_fit_start(self, trainer: "pl.Trainer", pl_module: "pl.LightningModule"):
-        for config in trainer.lr_scheduler_configs:
-            optimizer = config.scheduler.optimizer
-            config.scheduler = FileLR(optimizer, self.path)
-            config.interval = "step"
-            config.frequency = 1
-            config.reduce_on_plateau = False
+    def on_before_optimizer_step(
+        self,
+        trainer: "pl.Trainer",
+        pl_module: "pl.LightningModule",
+        optimizer: "torch.optim.Optimizer",
+    ):
+        with open(self.path, "r") as f:
+            lr = float(f.read())
+
+        for param_group in optimizer.param_groups:
+            param_group["lr"] = lr
 
 
 if __name__ == "__main__":
@@ -44,8 +48,7 @@ if __name__ == "__main__":
 
         def configure_optimizers(self):
             optimizer = torch.optim.AdamW(self.parameters(), lr=1e-3)
-            scheduler = FileLR(optimizer, path="lr")
-            return [optimizer], [scheduler]
+            return optimizer
 
         def on_before_optimizer_step(self, optimizer):
             print(optimizer.param_groups[0]["lr"])
