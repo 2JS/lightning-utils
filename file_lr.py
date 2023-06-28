@@ -1,17 +1,16 @@
-from torch.optim.lr_scheduler import LambdaLR
+from torch.optim.lr_scheduler import LRScheduler
 from pytorch_lightning.callbacks import Callback
 
 
-class FileLR(LambdaLR):
-    def __init__(self, optimizer, path='lr', *args, **kwargs):
+class FileLR(LRScheduler):
+    def __init__(self, optimizer, path="lr", *args, **kwargs):
         self.path = path
-        self.optimizer_initial_lr = optimizer.defaults['lr']
-        super(FileLR, self).__init__(optimizer, self.lr_lambda, *args, **kwargs)
+        super().__init__(optimizer, *args, **kwargs)
 
-    def lr_lambda(self, epoch):
-        with open(self.path, 'r') as f:
+    def get_lr(self):
+        with open(self.path, "r") as f:
             lr = float(f.read())
-        return lr / self.optimizer_initial_lr
+        return [lr] * len(self.base_lrs)
 
 
 class FileLRCallback(Callback):
