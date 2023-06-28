@@ -14,14 +14,15 @@ class FileLR(LRScheduler):
 
 
 class FileLRCallback(Callback):
-    def __init__(self, path='lr'):
+    def __init__(self, path="lr"):
+        super().__init__()
         self.path = path
 
     def on_fit_start(self, trainer: "pl.Trainer", pl_module: "pl.LightningModule"):
         for config in trainer.lr_scheduler_configs:
             optimizer = config.scheduler.optimizer
             config.scheduler = FileLR(optimizer, self.path)
-            config.interval = 'step'
+            config.interval = "step"
             config.frequency = 1
             config.reduce_on_plateau = False
 
