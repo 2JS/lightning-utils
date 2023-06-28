@@ -1,6 +1,7 @@
 from typing import Sequence
 
 import torch
+import pytorch_lightning as pl
 
 
 class DummyTensorDataset(torch.utils.data.IterableDataset):
@@ -19,6 +20,23 @@ class DummyTensorDataLoader(torch.utils.data.DataLoader):
             DummyTensorDataset(*example_tensors),
             **kwargs,
         )
+
+
+class DummyTensorDataModule(pl.LightningDataModule):
+    def __init__(self, *example_tensors, batch_size=2):
+        super().__init__()
+
+        self.example_tensors = example_tensors
+        self.batch_size = batch_size
+
+    def train_dataloader(self):
+        return DummyTensorDataLoader(*self.example_tensors, batch_size=self.batch_size)
+
+    def val_dataloader(self):
+        return DummyTensorDataLoader(*self.example_tensors, batch_size=self.batch_size)
+
+    def test_dataloader(self):
+        return DummyTensorDataLoader(*self.example_tensors, batch_size=self.batch_size)
 
 
 if __name__ == "__main__":
