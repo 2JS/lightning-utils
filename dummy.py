@@ -13,6 +13,14 @@ class DummyTensorDataset(torch.utils.data.IterableDataset):
             yield self.generator()
 
 
+class DummyTensorDataLoader(torch.utils.data.DataLoader):
+    def __init__(self, *example_tensors, **kwargs):
+        super().__init__(
+            DummyTensorDataset(*example_tensors),
+            **kwargs,
+        )
+
+
 if __name__ == "__main__":
     dataset = DummyTensorDataset(torch.zeros(1, 2, 3), torch.zeros(4, 5, 6))
     dataloader = torch.utils.data.DataLoader(dataset, batch_size=2)
