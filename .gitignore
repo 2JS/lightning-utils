@@ -1,5 +1,9 @@
-# Created by https://www.toptal.com/developers/gitignore/api/macos,virtualenv,visualstudiocode,python
-# Edit at https://www.toptal.com/developers/gitignore?templates=macos,virtualenv,visualstudiocode,python
+# Created by https://www.toptal.com/developers/gitignore/api/macos,python,virtualenv,visualstudiocode,direnv
+# Edit at https://www.toptal.com/developers/gitignore?templates=macos,python,virtualenv,visualstudiocode,direnv
+
+### direnv ###
+.direnv
+.envrc
 
 ### macOS ###
 # General
@@ -237,4 +241,5 @@ pip-selfcheck.json
 .history
 .ionide
 
-# End of https://www.toptal.com/developers/gitignore/api/macos,virtualenv,visualstudiocode,python
+# End of https://www.toptal.com/developers/gitignore/api/macos,python,virtualenv,visualstudiocode,direnv
+
