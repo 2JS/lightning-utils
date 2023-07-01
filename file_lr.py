@@ -48,14 +48,16 @@ if __name__ == "__main__":
 
         def configure_optimizers(self):
             optimizer = torch.optim.AdamW(self.parameters(), lr=1e-3)
-            return optimizer
+            scheduler = torch.optim.lr_scheduler.LinearLR(optimizer, 1, 1e-2)
+            return [optimizer], [scheduler]
 
         def on_before_optimizer_step(self, optimizer):
             print(optimizer.param_groups[0]["lr"])
 
     trainer = pl.Trainer(
         callbacks=[FileLRCallback()],
-        max_steps=10,
+        max_epochs=10,
+        limit_train_batches=1,
     )
 
     trainer.fit(
