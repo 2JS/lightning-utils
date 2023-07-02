@@ -18,10 +18,19 @@ def _log(
         pl_module.log(
             f"{prefix}loss",
             result,
+            prog_bar=True,
             rank_zero_only=rank_zero_only,
             **log_kwargs,
         )
     elif isinstance(result, dict):
+        pl_module.log(
+            f"{prefix}loss",
+            result.pop("loss"),
+            prog_bar=True,
+            rank_zero_only=rank_zero_only,
+            **log_kwargs,
+        )
+
         _result = {f"{prefix}{k}": v for k, v in result.items() if k[0] != "_"}
         pl_module.log_dict(
             _result,
