@@ -1,4 +1,5 @@
 from torch.optim.lr_scheduler import LRScheduler
+from torch.distributed import broadcast_object_list
 from pytorch_lightning.callbacks import Callback
 
 
@@ -24,8 +25,14 @@ class FileLRCallback(Callback):
         pl_module: "pl.LightningModule",
         optimizer: "torch.optim.Optimizer",
     ):
-        with open(self.path, "r") as f:
-            lr = float(f.read())
+        lr = 0
+
+        if trainer.is_global_zero:
+            with open(self.path, "r") as f:
+                lr = float(f.read())
+
+        if trainer.world_size > 1:
+            broadcast_object_list([lr], src=0)
 
         for param_group in optimizer.param_groups:
             param_group["lr"] = lr
