@@ -19,6 +19,15 @@ class FileLRCallback(Callback):
         super().__init__()
         self.path = path
 
+    def setup(
+        self,
+        trainer: "pl.Trainer",
+        pl_module: "pl.LightningModule",
+        stage: str,
+    ):
+        with open(self.path, "r") as f:
+            lr = float(f.read())
+
     def on_before_optimizer_step(
         self,
         trainer: "pl.Trainer",
