@@ -1,7 +1,5 @@
-from typing import Sequence
-
-import torch
 import pytorch_lightning as pl
+import torch
 
 
 class DummyTensorDataset(torch.utils.data.IterableDataset):

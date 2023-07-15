@@ -2,9 +2,9 @@ from functools import wraps
 from typing import Any, Optional
 
 import pytorch_lightning as pl
-from pytorch_lightning.utilities.types import STEP_OUTPUT
 import torch
 from pytorch_lightning.trainer.states import RunningStage
+from pytorch_lightning.utilities.types import STEP_OUTPUT
 
 
 def _log(

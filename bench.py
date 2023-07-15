@@ -30,7 +30,7 @@ class bench:
 
 
 if __name__ == "__main__":
-    with bench('hello'):
+    with bench("hello"):
         print("Hello world!")
 
     @bench()

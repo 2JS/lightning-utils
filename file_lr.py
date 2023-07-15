@@ -1,6 +1,6 @@
-from torch.optim.lr_scheduler import LRScheduler
-from torch.distributed import broadcast_object_list
 from pytorch_lightning.callbacks import Callback
+from torch.distributed import broadcast_object_list
+from torch.optim.lr_scheduler import LRScheduler
 
 
 class FileLR(LRScheduler):
@@ -39,8 +39,9 @@ class FileLRCallback(Callback):
 
 
 if __name__ == "__main__":
-    import torch
     import pytorch_lightning as pl
+    import torch
+
     from dummy import DummyTensorDataModule
 
     class Module(pl.LightningModule):
