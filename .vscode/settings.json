@@ -1,0 +1,11 @@
+{
+    "[python]": {
+        "diffEditor.ignoreTrimWhitespace": false,
+        "editor.formatOnType": true,
+        "editor.wordBasedSuggestions": false,
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": true
+        }
+    },
+    "editor.formatOnSave": true
+}
