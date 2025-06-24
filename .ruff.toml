@@ -1,0 +1,9 @@
+line-length = 80
+indent-width = 2
+target-version = "py313"
+
+[lint]
+select = ["E", "F", "UP", "B", "SIM", "I", "PD", "NPY", "RUF"]
+
+[format]
+line-ending = "lf"
