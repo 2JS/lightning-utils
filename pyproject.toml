@@ -8,3 +8,9 @@ dependencies = [
     "lightning>=2.5.2",
     "torch>=2.7.1",
 ]
+
+[dependency-groups]
+dev = [
+    "pre-commit>=4.2.0",
+    "ruff>=0.12.0",
+]
